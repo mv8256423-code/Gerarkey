@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUARTE KEY SISTEM</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{background:#08080a;font-family:'Inter',sans-serif;color:white}
+.font-tech{font-family:'Orbitron',sans-serif}
+.glow-red{box-shadow:0 0 25px rgba(255,0,40,.4),inset 0 0 20px rgba(255,0,40,.05)}
+.card{background:linear-gradient(180deg,#16161d 0%,#101016 100%);border:1px solid rgba(255,255,255,.07)}
+.btn-red{background:linear-gradient(90deg,#ff0033,#cc001f);box-shadow:0 0 20px rgba(255,0,51,.5)}
+.btn-dark{background:#1e1e26;border:1px solid rgba(255,255,255,.08)}
+.active-opt{background:#ff0033!important;color:white!important;border-color:#ff0033!important;box-shadow:0 0 15px rgba(255,0,51,.6)}
+.online-dot{animation:pulse 1.5s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,255,100,.7)}70%{box-shadow:0 0 0 8px rgba(0,255,100,0)}100%{box-shadow:0 0 0 0 rgba(0,255,100,0)}}
+</style>
+</head>
+
+<body class="p-4 max-w-[480px] mx-auto">
+
+<!-- HEADER -->
+<div class="flex justify-between items-center">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 btn-red rounded-xl flex items-center justify-center font-tech font-extrabold">D</div>
+    <div>
+      <h1 class="font-tech text-[16px] tracking-widest leading-none">DUARTE <span class="text-[#ff0033]">KEY</span> SISTEM</h1>
+      <p class="text-[9px] tracking-[0.4em] opacity-50 mt-1">TECNOLOGIA UNICA</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-2 bg-[#121216] px-3 py-1.5 rounded-full border border-white/10">
+    <div class="w-2 h-2 bg-[#00ff66] rounded-full online-dot"></div>
+    <span class="text-[10px] font-bold text-[#00ff66]">ONLINE</span>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="grid grid-cols-2 gap-3 mt-6">
+  <div class="card rounded-2xl p-4 glow-red">
+    <p class="text-[9px] opacity-40 tracking-widest">TOTAL GERADAS</p>
+    <h2 id="totalKeys" class="font-tech text-[28px] mt-1">0</h2>
+    <p class="text-[10px] text-[#ff0033] mt-1"><i class="fa-solid fa-key"></i> keys</p>
+  </div>
+  <div class="card rounded-2xl p-4">
+    <p class="text-[9px] opacity-40 tracking-widest">ATIVAS</p>
+    <h2 id="ativas" class="font-tech text-[28px] mt-1 text-[#00ff66]">0</h2>
+    <p class="text-[10px] opacity-40">operando</p>
+  </div>
+  <div class="card rounded-2xl p-4 border-red-500/30">
+    <p class="text-[9px] opacity-40 tracking-widest">DESATIVADAS</p>
+    <h2 id="desativadas" class="font-tech text-[28px] mt-1 text-red-500">0</h2>
+    <p class="text-[10px] opacity-40">expiradas</p>
+  </div>
+  <div class="card rounded-2xl p-4 border-yellow-500/20">
+    <p class="text-[9px] opacity-40 tracking-widest">PAUSADAS</p>
+    <h2 id="pausadas" class="font-tech text-[28px] mt-1 text-yellow-400">0</h2>
+    <p class="text-[10px] opacity-40">em espera</p>
+  </div>
+</div>
+
+<!-- GERADOR -->
+<div class="card rounded-[24px] mt-6 p-5 glow-red">
+  <h3 class="font-tech text-[13px] tracking-widest">
+    <i class="fa-solid fa-bolt text-[#ff0033]"></i> GERADOR DUARTE
+  </h3>
+
+  <p class="text-[10px] tracking-[0.3em] opacity-40 mt-5">DURAÇÃO DA KEY</p>
+  <div class="grid grid-cols-3 gap-2 mt-3" id="diasGroup">
+    <button onclick="setDias(this,1)" class="btn-dark py-3 rounded-full text-[12px] font-bold active-opt">1 DIA</button>
+    <button onclick="setDias(this,3)" class="btn-dark py-3 rounded-full text-[12px] font-bold">3 DIAS</button>
+    <button onclick="setDias(this,7)" class="btn-dark py-3 rounded-full text-[12px] font-bold">7 DIAS</button>
+    <button onclick="setDias(this,15)" class="btn-dark py-3 rounded-full text-[12px] font-bold">15 DIAS</button>
+    <button onclick="setDias(this,30)" class="btn-dark py-3 rounded-full text-[12px] font-bold">30 DIAS</button>
+  </div>
+
+  <p class="text-[10px] tracking-[0.3em] opacity-40 mt-5">NÚMERO DE USUÁRIOS QUE PODEM USAR</p>
+  <div class="flex items-center gap-3 mt-3">
+    <button onclick="changeUser(-1)" class="w-12 h-12 btn-dark rounded-full"><i class="fa-solid fa-minus"></i></button>
+    <input id="maxUsers" type="number" value="1" min="1" class="flex-1 bg-[#0e0e12] border border-white/10 rounded-full py-3 text-center font-tech text-[20px] outline-none">
+    <button onclick="changeUser(1)" class="w-12 h-12 btn-red rounded-full"><i class="fa-solid fa-plus"></i></button>
+  </div>
+  <p class="text-[9px] opacity-30 text-center mt-2">Você pode colocar 1, 10, 100, 1000... ilimitado</p>
+
+  <p class="text-[10px] tracking-[0.3em] opacity-40 mt-5">QUANTIDADE DE KEYS</p>
+  <input id="qtd" type="number" value="1" min="1" class="w-full mt-3 bg-[#0e0e12] border border-white/10 rounded-full px-5 py-3 text-[13px] outline-none">
+
+  <button onclick="gerarKeys()" class="w-full btn-red py-4 rounded-full font-tech font-bold text-[14px] mt-6 tracking-widest">
+    <i class="fa-solid fa-fire"></i> GERAR KEY DUARTE
+  </button>
+
+  <div class="grid grid-cols-2 gap-2 mt-3">
+    <button onclick="pausarTodas()" class="btn-dark py-3 rounded-full text-[11px]">
+      <i class="fa-solid fa-pause"></i> Pausar Todas
+    </button>
+    <button onclick="despausarTodas()" class="btn-dark py-3 rounded-full text-[11px]">
+      <i class="fa-solid fa-play"></i> Despausar Todas
+    </button>
+  </div>
+</div>
+
+<!-- LISTA -->
+<div class="mt-6">
+  <div class="flex justify-between items-center">
+    <h3 class="font-tech text-[12px] tracking-widest opacity-70">MINHAS KEYS</h3>
+    <input id="busca" oninput="render()" placeholder="Buscar key..." class="bg-[#121216] border border-white/10 rounded-full px-4 py-2 text-[11px] w-32 outline-none">
+  </div>
+  <div id="lista" class="mt-4 space-y-3"></div>
+</div>
+
+<!-- FIREBASE + APP -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  push,
+  set,
+  update,
+  remove
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+/*
+  Configuração baseada no google-services.json enviado.
+  O apiKey de uma aplicação web Firebase não é, por si só, um segredo.
+  A proteção real dos dados deve ser feita nas Rules do Realtime Database.
+*/
+const firebaseConfig = {
+  apiKey: "AIzaSyDAF-nGBt41aMurr9O4nwS_Ge0iQhaYuQ8",
+  databaseURL: "https://netflix-fd5f5-default-rtdb.firebaseio.com",
+  projectId: "netflix-fd5f5",
+  storageBucket: "netflix-fd5f5.firebasestorage.app",
+  messagingSenderId: "609964615002",
+  appId: "1:609964615002:android:f599517ac2a7bca626bf63"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const keysRef = ref(db, "duarte_keys");
+
+let diasSelecionado = 1;
+let keys = [];
+
+/* Sincronização em tempo real */
+onValue(
+  keysRef,
+  (snapshot) => {
+    const data = snapshot.val() || {};
+
+    keys = Object.entries(data)
+      .map(([firebaseId, item]) => ({
+        firebaseId,
+        ...item
+      }))
+      .sort((a, b) => (b.criacao || 0) - (a.criacao || 0));
+
+    render();
+  },
+  (error) => {
+    console.error("Erro ao ler Firebase:", error);
+    document.getElementById("lista").innerHTML =
+      '<p class="text-center text-red-400 text-[12px] mt-10">Erro ao conectar ao Firebase.</p>';
+  }
+);
+
+window.setDias = function(el, d) {
+  diasSelecionado = d;
+  document.querySelectorAll("#diasGroup button").forEach(b => b.classList.remove("active-opt"));
+  el.classList.add("active-opt");
+};
+
+window.changeUser = function(v) {
+  const input = document.getElementById("maxUsers");
+  input.value = Math.max(1, parseInt(input.value || 1) + v);
+};
+
+function gerarCodigo() {
+  const a = Math.random().toString(36).toUpperCase().substring(2, 7);
+  const b = Math.random().toString(36).toUpperCase().substring(2, 6);
+  return `DUARTE-${a}-${b}`;
+}
+
+window.gerarKeys = async function() {
+  const qtd = Math.max(1, parseInt(document.getElementById("qtd").value || 1));
+  const maxU = Math.max(1, parseInt(document.getElementById("maxUsers").value || 1));
+
+  try {
+    for (let k = 0; k < qtd; k++) {
+      const novaRef = push(keysRef);
+
+      const item = {
+        code: gerarCodigo(),
+        dias: diasSelecionado,
+        maxUsers: maxU,
+        usados: 0,
+        status: "ativa",
+        criacao: Date.now(),
+        dispositivos: []
+      };
+
+      await set(novaRef, item);
+    }
+
+    alert(`${qtd} key(s) gerada(s) com sucesso!`);
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possível salvar no Firebase.");
+  }
+};
+
+window.togglePausa = async function(firebaseId) {
+  const item = keys.find(x => x.firebaseId === firebaseId);
+  if (!item) return;
+
+  const novoStatus = item.status === "pausada" ? "ativa" : "pausada";
+
+  try {
+    await update(ref(db, `duarte_keys/${firebaseId}`), {
+      status: novoStatus
+    });
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao alterar o status da key.");
+  }
+};
+
+window.pausarTodas = async function() {
+  const updates = {};
+
+  keys.forEach(item => {
+    if (item.status === "ativa") {
+      updates[`duarte_keys/${item.firebaseId}/status`] = "pausada";
+    }
+  });
+
+  if (!Object.keys(updates).length) return;
+
+  try {
+    await update(ref(db), updates);
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao pausar as keys.");
+  }
+};
+
+window.despausarTodas = async function() {
+  const updates = {};
+
+  keys.forEach(item => {
+    if (item.status === "pausada") {
+      updates[`duarte_keys/${item.firebaseId}/status`] = "ativa";
+    }
+  });
+
+  if (!Object.keys(updates).length) return;
+
+  try {
+    await update(ref(db), updates);
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao despausar as keys.");
+  }
+};
+
+window.resetDisp = async function(firebaseId) {
+  const item = keys.find(x => x.firebaseId === firebaseId);
+  if (!item) return;
+
+  try {
+    await update(ref(db, `duarte_keys/${firebaseId}`), {
+      dispositivos: [],
+      usados: 0
+    });
+
+    alert("Dispositivos resetados da key " + item.code);
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao resetar os dispositivos.");
+  }
+};
+
+window.excluir = async function(firebaseId) {
+  const item = keys.find(x => x.firebaseId === firebaseId);
+  if (!item) return;
+
+  if (!confirm("Excluir essa key?")) return;
+
+  try {
+    await remove(ref(db, `duarte_keys/${firebaseId}`));
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao excluir a key.");
+  }
+};
+
+window.render = function() {
+  const busca = (document.getElementById("busca")?.value || "").toLowerCase();
+
+  let html = "";
+
+  const filtradas = keys.filter(item =>
+    !busca || (item.code || "").toLowerCase().includes(busca)
+  );
+
+  filtradas.forEach(item => {
+    const statusColor =
+      item.status === "ativa"
+        ? "text-[#00ff66] border-[#00ff66]/30"
+        : item.status === "pausada"
+        ? "text-yellow-400 border-yellow-400/30"
+        : "text-red-500 border-red-500/30";
+
+    const dispositivos = Array.isArray(item.dispositivos)
+      ? item.dispositivos
+      : [];
+
+    html += `
+      <div class="card rounded-2xl p-4 ${item.status === "pausada" ? "border-yellow-400/20" : ""}">
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <p class="font-mono text-[13px] text-[#ff2a4a] font-bold">${escapeHtml(item.code || "")}</p>
+
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="text-[9px] px-2 py-1 rounded-full bg-white/5 border ${statusColor}">
+                ${(item.status || "").toUpperCase()}
+              </span>
+
+              <span class="text-[9px] px-2 py-1 rounded-full bg-white/5">
+                ${item.dias || 0} DIAS
+              </span>
+
+              <span class="text-[9px] px-2 py-1 rounded-full bg-white/5">
+                ${item.usados || 0}/${item.maxUsers || 0} USUÁRIOS
+              </span>
+            </div>
+          </div>
+
+          <div class="flex gap-1">
+            <button onclick="togglePausa('${item.firebaseId}')" class="w-8 h-8 btn-dark rounded-full text-[12px]">
+              ${
+                item.status === "pausada"
+                  ? '<i class="fa-solid fa-play"></i>'
+                  : '<i class="fa-solid fa-pause"></i>'
+              }
+            </button>
+
+            <button onclick="resetDisp('${item.firebaseId}')" class="w-8 h-8 btn-dark rounded-full text-[12px]">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+
+            <button onclick="excluir('${item.firebaseId}')" class="w-8 h-8 bg-red-500/20 rounded-full text-[12px] text-red-400">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-3 flex gap-2 text-[9px] opacity-40">
+          <i class="fa-solid fa-mobile"></i>
+          ${escapeHtml(dispositivos.join(", ") || "Nenhum dispositivo")}
+          | Expira em ${item.dias || 0} dias
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById("lista").innerHTML =
+    html ||
+    '<p class="text-center opacity-30 text-[12px] mt-10">Nenhuma key gerada ainda</p>';
+
+  document.getElementById("totalKeys").innerText = keys.length;
+  document.getElementById("ativas").innerText =
+    keys.filter(k => k.status === "ativa").length;
+  document.getElementById("pausadas").innerText =
+    keys.filter(k => k.status === "pausada").length;
+  document.getElementById("desativadas").innerText =
+    keys.filter(k => k.status === "expirada").length;
+};
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+window.render();
+</script>
+
+</body>
+</html>
